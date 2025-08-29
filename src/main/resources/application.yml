@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: delivery-service
+
+app:
+  topics:
+    orderCreated: order.created
+    orderCanceled: order.canceled
+    paymentAuthorized: payment.authorized
+    paymentFailed: payment.failed
+    kitchenAccepted: kitchen.accepted
+    kitchenPrepared: kitchen.prepared
+    deliveryAssigned: delivery.assigned
+    deliveryCompleted: delivery.completed
