@@ -1,3 +1,6 @@
 package com.example.delivery.events;
 
-public record DeliveryCompletedEvent() {}
+import java.time.Instant;
+import java.util.UUID;
+
+public record DeliveryCompletedEvent(UUID orderId, String driverId, Instant completedAt) {}
