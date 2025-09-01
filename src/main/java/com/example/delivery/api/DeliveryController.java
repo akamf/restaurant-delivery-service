@@ -14,13 +14,13 @@ public class DeliveryController {
     private final DeliveryAssignmentService service;
 
     @PostMapping("/{orderId}/assign")
-    public ResponseEntity<Void> assign(@PathVariable UUID orderId) {
+    public ResponseEntity<Void> assign(@PathVariable("orderId") UUID orderId) {
         service.assignDriverFor(orderId);
         return ResponseEntity.accepted().build();
     }
 
     @PostMapping("/{orderId}/complete")
-    public ResponseEntity<Void> complete(@PathVariable UUID orderId) {
+    public ResponseEntity<Void> complete(@PathVariable("orderId") UUID orderId) {
         service.complete(orderId);
         return ResponseEntity.accepted().build();
     }
