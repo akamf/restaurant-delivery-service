@@ -49,18 +49,14 @@ import org.testcontainers.junit.jupiter.Testcontainers;
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
         "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
-        // Läs från början om gruppen är ny
         "spring.kafka.consumer.auto-offset-reset=earliest",
-        // PRODUCER: JSON med type headers
         "spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer",
         "spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer",
         "spring.kafka.producer.properties.spring.json.add.type.headers=true",
-        // CONSUMER: JSON (tillit + default-typ = OrderCanceledEvent för att undvika typ-miss)
         "spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer",
         "spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.JsonDeserializer",
         "spring.kafka.consumer.properties.spring.json.trusted.packages=com.example.delivery.events",
         "spring.kafka.consumer.properties.spring.json.value.default.type=com.example.delivery.events.OrderCanceledEvent",
-        // DB i IT: skapa/drop (du valde Alt 1)
         "spring.jpa.hibernate.ddl-auto=create-drop",
         "spring.flyway.enabled=false",
     }
@@ -81,13 +77,11 @@ class DeliveryFlowIT {
 
     @DynamicPropertySource
     static void registerProps(DynamicPropertyRegistry r) {
-        // peka Spring DataSource mot Testcontainers-Postgres
         r.add("spring.datasource.url", postgres::getJdbcUrl);
         r.add("spring.datasource.username", postgres::getUsername);
         r.add("spring.datasource.password", postgres::getPassword);
         r.add("spring.datasource.driver-class-name", () -> "org.postgresql.Driver");
 
-        // (om dina @KafkaListener använder properties för topic-namn)
         r.add("app.topics.kitchenPrepared", () -> "kitchen.prepared");
         r.add("app.topics.orderCanceled", () -> "order.canceled");
         r.add("app.topics.deliveryAssigned", () -> "delivery.assigned");
@@ -223,10 +217,8 @@ class DeliveryFlowIT {
             new OrderCanceledEvent(orderId, java.time.Instant.now(), "test")
         );
 
-        // ✅ Verifiera att listenern faktiskt anropat servicen
         verify(service, timeout(10000)).cancelIfActive(orderId);
 
-        // ✅ Vänta in DB-uppdateringen med lite mer slack
         Delivery canceled = waitFor(
             () ->
                 deliveryRepo
