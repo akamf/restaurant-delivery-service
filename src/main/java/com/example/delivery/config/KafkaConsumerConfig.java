@@ -1,7 +1,5 @@
 package com.example.delivery.config;
 
-import com.example.delivery.events.KitchenPreparedEvent;
-import com.example.delivery.events.OrderCanceledEvent;
 import java.util.Map;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaConsumerFactoryCustomizer;
