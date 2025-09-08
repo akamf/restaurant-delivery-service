@@ -39,6 +39,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import java.time.LocalDateTime;
 
 /**
  * End-to-end IT:
@@ -214,7 +215,7 @@ class DeliveryFlowIT {
         kafkaTemplate.send(
             "order.canceled",
             orderId.toString(),
-            new OrderCanceledEvent(orderId, java.time.Instant.now(), "test")
+            new OrderCanceledEvent(orderId, LocalDateTime.now(), "test")
         );
 
         verify(service, timeout(10000)).cancelIfActive(orderId);

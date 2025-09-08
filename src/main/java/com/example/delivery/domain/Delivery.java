@@ -1,7 +1,7 @@
 package com.example.delivery.domain;
 
 import jakarta.persistence.*;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.*;
 
@@ -26,6 +26,6 @@ public class Delivery {
     @Column(nullable = false)
     private DeliveryStatus status;
 
-    private Instant assignedAt;
-    private Instant completedAt;
+    private LocalDateTime assignedAt;
+    private LocalDateTime completedAt;
 }

@@ -5,7 +5,7 @@ import com.example.delivery.events.DeliveryAssignedEvent;
 import com.example.delivery.events.DeliveryCompletedEvent;
 import com.example.delivery.messaging.DeliveryEventProducer;
 import com.example.delivery.repository.DeliveryRepository;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class DeliveryAssignmentService {
             );
         delivery.setDriverId(driverId);
         delivery.setStatus(DeliveryStatus.ASSIGNED);
-        delivery.setAssignedAt(Instant.now());
+        delivery.setAssignedAt(LocalDateTime.now());
         repo.save(delivery);
 
         producer.publishAssigned(
@@ -54,7 +54,7 @@ public class DeliveryAssignmentService {
         if (opt.isEmpty()) return;
         Delivery d = opt.get();
         d.setStatus(DeliveryStatus.COMPLETED);
-        d.setCompletedAt(Instant.now());
+        d.setCompletedAt(LocalDateTime.now());
         repo.save(d);
         producer.publishCompleted(
             new DeliveryCompletedEvent(orderId, d.getDriverId(), d.getCompletedAt())
