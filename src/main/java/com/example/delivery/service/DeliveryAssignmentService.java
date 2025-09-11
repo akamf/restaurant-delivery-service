@@ -60,4 +60,9 @@ public class DeliveryAssignmentService {
             new DeliveryCompletedEvent(orderId, d.getDriverId(), d.getCompletedAt())
         );
     }
+
+    public Optional<Delivery> getDeliveryByOrderId(UUID orderId) {
+        return repo.findByOrderId(orderId);
+    }
+
 }

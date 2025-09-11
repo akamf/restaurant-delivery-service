@@ -1,5 +1,6 @@
 package com.example.delivery.api;
 
+import com.example.delivery.domain.DeliveryStatus;
 import com.example.delivery.service.DeliveryAssignmentService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -24,4 +25,12 @@ public class DeliveryController {
         service.complete(orderId);
         return ResponseEntity.accepted().build();
     }
+
+    @GetMapping("/{orderId}/status")
+    public ResponseEntity<DeliveryStatus> getStatus(@PathVariable UUID orderId) {
+        return service.getDeliveryByOrderId(orderId)
+                .map(delivery -> ResponseEntity.ok(delivery.getStatus()))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }
